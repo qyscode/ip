@@ -122,7 +122,12 @@ public class Galaxy {
 				System.out.println("OK, I've marked this task as not done yet:\n [ ] " + arrayList.get(num-1).getName());
 
 			} else if (target.startsWith("todo")) {
-				String taskName = target.subSequence(5,target.length()).toString();
+				String taskName = target.subSequence(4,target.length()).toString();
+				if (taskName.isEmpty()) {
+					emptyErrorMsg();
+					continue;
+				}
+				taskName = taskName.trim();
 				Task newTask = new Task(taskName, false, "T");
 				arrayList.add(newTask);
 				System.out.println("Got it. I've added this task:\n " +
@@ -131,7 +136,12 @@ public class Galaxy {
 				listCount(arrayList);
 
 			} else if (target.startsWith("deadline")) {
-				String taskName = target.substring(9, target.indexOf("/")).trim();
+				String taskName = target.substring(8, target.indexOf("/")).trim();
+				if (taskName.isEmpty()) {
+					emptyErrorMsg();
+					continue;
+				}
+				taskName = taskName.trim();
 				String deadline = target.substring(target.indexOf("/")+4).trim();
 				Task newTask = new Deadline(taskName, false, "D", deadline);
 				arrayList.add(newTask);
@@ -140,8 +150,12 @@ public class Galaxy {
 						//"[" + "D" + "][" + newTask.getCondition() + "] " + taskName + " (by: " + deadline + ")");
 				listCount(arrayList);
 			} else if (target.startsWith("event")) {
-				String taskName = target.substring(6, target.indexOf("/")).trim();
-
+				String taskName = target.substring(5, target.indexOf("/")).trim();
+				if (taskName.isEmpty()) {
+					emptyErrorMsg();
+					continue;
+				}
+				taskName = taskName.trim();
 				String split = target.substring(target.indexOf("/")+1).trim();
 				String start = split.substring(5,split.indexOf("/")-1).trim();
 
@@ -164,6 +178,9 @@ public class Galaxy {
 	/* This deals with the repetitive ending message */
 	public static void listCount(List<Task> arrayList) {
 		System.out.println("Now you have " + arrayList.size() + " tasks in the list.");
+	}
+	public static void emptyErrorMsg() {
+		System.out.println("Eh your description cannot be empty");
 	}
 }
 
