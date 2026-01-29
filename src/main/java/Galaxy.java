@@ -23,7 +23,8 @@ public class Galaxy {
 	// To use polymorphism
 	/* Task[] tasks = new Task[100];
 	 tasks[0] = new Deadline("return book", "Monday");*/
-	public static class Task {
+
+	public static class Task  {
 		private final String taskType;
 		private final String name;
 		private boolean done;
@@ -45,11 +46,9 @@ public class Galaxy {
 		public String getType() {
 			return taskType;
 		}
-
 		public String toString() {
 			return "[" + "T" + "][" + this.getCondition() + "] " + this.getName();
 		}
-
 	}
 
 	public static class Deadline extends Task {
@@ -86,15 +85,12 @@ public class Galaxy {
 		}
 	}
 
-
-
 	public static void main(String[] args) {
 		System.out.println("____________________________________________________________");
  		System.out.println("Hello! I'm Galaxy");
 		System.out.println("What can I do for you?");
 		Scanner scanner = new Scanner(System.in);
 		List<Task> arrayList = new ArrayList<>();
-
 
 		while (true) {
 			String target = scanner.nextLine(); // Read a line of text input
@@ -108,6 +104,13 @@ public class Galaxy {
 				for (int i = 0; i < arrayList.size(); i++) {
 					System.out.println((i + 1) + "." + arrayList.get(i).toString());
 				}
+
+			} else if (target.startsWith("delete")) {
+				int removalIndex = Integer.parseInt(target.substring(7));
+				Task taskRelevant = arrayList.get(removalIndex-1);
+				arrayList.remove(removalIndex-1);
+				System.out.println("Noted. I've removed this task:\n " + taskRelevant.toString());
+
 			} else if (target.startsWith("mark")) {
 				int num = Integer.parseInt(target.subSequence(5,target.length()).toString());
 				arrayList.get(num-1).done = true;
@@ -150,10 +153,8 @@ public class Galaxy {
 						newTask.toString());
 				//"[" + "D" + "][" + newTask.getCondition() + "] " + taskName + " (by: " + deadline + ")");
 				listCount(arrayList);
-			}
-
-			else {
-				continue;
+			} else {
+				System.out.println("What you saying sia");
 			}
 
 		}
