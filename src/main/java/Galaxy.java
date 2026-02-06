@@ -24,33 +24,6 @@ public class Galaxy {
 	/* Task[] tasks = new Task[100];
 	 tasks[0] = new Deadline("return book", "Monday");*/
 
-	public static class Task  {
-		private final String taskType;
-		private final String name;
-		private boolean done;
-
-		public Task(String name, boolean done, String taskType) {
-			this.name = name;
-			this.done = done;
-			this.taskType = taskType;
-		}
-
-		public String getName() {
-			return name;
-		}
-		public String getCondition() {
-			if (done) {
-				return "X";
-			} else return " ";
-		}
-		public String getType() {
-			return taskType;
-		}
-		public String toString() {
-			return "[" + "T" + "][" + this.getCondition() + "] " + this.getName();
-		}
-	}
-
 	public static class Deadline extends Task {
 		private final String deadline;
 
@@ -113,12 +86,12 @@ public class Galaxy {
 
 			} else if (target.startsWith("mark")) {
 				int num = Integer.parseInt(target.subSequence(5,target.length()).toString());
-				arrayList.get(num-1).done = true;
+				arrayList.get(num-1).setDone(true);
 				System.out.println("Nice! I've marked this task as done:\n [X] " + arrayList.get(num-1).getName());
 
 			} else if (target.startsWith("unmark")) {
 				int num = Integer.parseInt(target.subSequence(7,target.length()).toString());
-				arrayList.get(num-1).done = false;
+				arrayList.get(num-1).setDone(false);
 				System.out.println("OK, I've marked this task as not done yet:\n [ ] " + arrayList.get(num-1).getName());
 
 			} else if (target.startsWith("todo")) {
