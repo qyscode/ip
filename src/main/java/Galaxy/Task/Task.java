@@ -1,31 +1,41 @@
+package galaxy.task;
+
 public class Task  {
     private final String taskType;
     private final String taskName;
-    private boolean done;
+    private boolean isDone;
 
-    public Task(String name, boolean done, String taskType) {
+    public Task(String name, boolean isDone, String taskType) {
         this.taskName = name;
-        this.done = done;
+        this.isDone = isDone;
         this.taskType = taskType;
     }
 
     public String getName() {
         return this.taskName;
     }
+
     public String getCondition() {
-        if (done) {
-            return "X";
-        } else return " ";
+        return isDone ? "X" : " ";
+    }
+
+    public boolean isDone() {
+        return this.isDone;
+    }
+
+    public String taskType() {
+        return this.taskType;
     }
 
     public void setDone(boolean bool) {
-        this.done = bool;
+        this.isDone = bool;
     }
 
-    public String getType() {
-        return taskType;
-    }
     public String toString() {
         return "[" + "T" + "][" + this.getCondition() + "] " + this.getName();
+    }
+    public String toCSV() {
+        String isDoneCond = this.isDone() ? "T" : "F";
+        return this.taskName + "," + isDoneCond + "," + this.taskType;
     }
 }
