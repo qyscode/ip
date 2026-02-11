@@ -1,9 +1,11 @@
-package Galaxy
-
+package galaxy.task;
 
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.List;
 
-
+import tools.Storage;
+import tools.Parser;
 
 
 public class Galaxy {
@@ -30,141 +32,27 @@ public class Galaxy {
 	/* Task[] tasks = new Task[100];
 	 tasks[0] = new Deadline("return book", "Monday");*/
 
-
-
-
-
-
-	public static class Deadline extends Task {
-		private final String deadline;
-
-		public Deadline(String name, boolean done, String taskType, String deadline) {
-			super(name, done, taskType);
-			this.deadline = deadline;
-		}
-		public String getDeadline() {
-			return this.deadline;
-		}
-
-		public String toString() {
-			return "[" + "D" + "][" + this.getCondition() + "] " +
-					this.getName() + " (by: " + this.getDeadline() + ")";
-		}
-	}
-
-	public static class Event extends Deadline {
-		private final String start;
-
-		public Event(String name, boolean done, String taskType, String deadline, String start) {
-			super(name, done, taskType, deadline);
-			this.start = start;
-		}
-
-		public String getStart() {
-			return this.start;
-		}
-		public String toString() {
-			return "[" + "E" + "][" + this.getCondition() + "] " +
-					this.getName() + " (from: " + this.getStart() + " to: " + this.getDeadline() + ")";
-		}
-	}
-
 	public static void main(String[] args) {
+		List<Task> taskList = new ArrayList<>();
+		String csvFileName = "app-data.csv"; // name of file where data is saved
+
+		// -- INIT --
+		//load Data from CSV
+		Storage.readCSV("ip/src/main/data/" + csvFileName, taskList); //load data
+
+		// Startup message
 		System.out.println("____________________________________________________________");
  		System.out.println("Hello! I'm Galaxy");
-		System.out.println("What can I do for you?");
+		System.out.println("I can save all the tasks in the galaxy. What can I do for you?");
+
 		Scanner scanner = new Scanner(System.in);
-		List<Task> arrayList = new ArrayList<>();
-
-		while (true) {
+		boolean takingInputs = true;
+		while (takingInputs) {
 			String target = scanner.nextLine(); // Read a line of text input
-
-			if (target.equals("bye")) {
-				System.out.println("____________________________________________________________\nBye. Hope to see you again soon!");
-				System.out.println("____________________________________________________________");
-				break;
-			} else if (target.equals("list")) {
-				System.out.println("Here are the tasks in your list:");
-				for (int i = 0; i < arrayList.size(); i++) {
-					System.out.println((i + 1) + "." + arrayList.get(i).toString());
-				}
-
-			} else if (target.startsWith("delete")) {
-				int removalIndex = Integer.parseInt(target.substring(7));
-				Task taskRelevant = arrayList.get(removalIndex-1);
-				arrayList.remove(removalIndex-1);
-				System.out.println("Noted. I've removed this task:\n " + taskRelevant.toString());
-
-			} else if (target.startsWith("mark")) {
-				int num = Integer.parseInt(target.subSequence(5,target.length()).toString());
-				arrayList.get(num-1).setDone(true);
-				System.out.println("Nice! I've marked this task as done:\n [X] " + arrayList.get(num-1).getName());
-
-			} else if (target.startsWith("unmark")) {
-				int num = Integer.parseInt(target.subSequence(7,target.length()).toString());
-				arrayList.get(num-1).setDone(false);
-				System.out.println("OK, I've marked this task as not done yet:\n [ ] " + arrayList.get(num-1).getName());
-
-			} else if (target.startsWith("todo")) {
-				String taskName = target.subSequence(4,target.length()).toString();
-				if (taskName.isEmpty()) {
-					emptyErrorMsg();
-					continue;
-				}
-				taskName = taskName.trim();
-				Task newTask = new Task(taskName, false, "T");
-				arrayList.add(newTask);
-				System.out.println("Got it. I've added this task:\n " +
-						newTask.toString());
-						//"[" + "T" + "][" + newTask.getCondition() + "] " + taskName);
-				listCount(arrayList);
-
-			} else if (target.startsWith("deadline")) {
-				String taskName = target.substring(8, target.indexOf("/")).trim();
-				if (taskName.isEmpty()) {
-					emptyErrorMsg();
-					continue;
-				}
-				taskName = taskName.trim();
-				String deadline = target.substring(target.indexOf("/")+4).trim();
-				Task newTask = new Deadline(taskName, false, "D", deadline);
-				arrayList.add(newTask);
-				System.out.println("Got it. I've added this task:\n " +
-						newTask.toString());
-						//"[" + "D" + "][" + newTask.getCondition() + "] " + taskName + " (by: " + deadline + ")");
-				listCount(arrayList);
-			} else if (target.startsWith("event")) {
-				String taskName = target.substring(5, target.indexOf("/")).trim();
-				if (taskName.isEmpty()) {
-					emptyErrorMsg();
-					continue;
-				}
-				taskName = taskName.trim();
-				String split = target.substring(target.indexOf("/")+1).trim();
-				String start = split.substring(5,split.indexOf("/")-1).trim();
-
-				String deadline = split.substring(split.indexOf("/")+4).trim();
-
-				Task newTask = new Event(taskName, false, "E", deadline, start);
-				arrayList.add(newTask);
-				System.out.println("Got it. I've added this task:\n " +
-						newTask.toString());
-				//"[" + "D" + "][" + newTask.getCondition() + "] " + taskName + " (by: " + deadline + ")");
-				listCount(arrayList);
-			} else {
-				System.out.println("What you saying sia");
-			}
-
+			takingInputs = Parser.parseCommand(target, taskList, csvFileName);
+			// parseCommand will return false where appropriate to end the program
 		}
 		scanner.close();
-	}
-
-	/* This deals with the repetitive ending message */
-	public static void listCount(List<Task> arrayList) {
-		System.out.println("Now you have " + arrayList.size() + " tasks in the list.");
-	}
-	public static void emptyErrorMsg() {
-		System.out.println("Eh your description cannot be empty");
 	}
 }
 
