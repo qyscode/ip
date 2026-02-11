@@ -1,4 +1,10 @@
-import java.util.*;
+package Galaxy
+
+
+import java.util.ArrayList;
+
+
+
 
 public class Galaxy {
 
@@ -23,6 +29,11 @@ public class Galaxy {
 	// To use polymorphism
 	/* Task[] tasks = new Task[100];
 	 tasks[0] = new Deadline("return book", "Monday");*/
+
+
+
+
+
 
 	public static class Deadline extends Task {
 		private final String deadline;
