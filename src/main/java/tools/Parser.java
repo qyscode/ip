@@ -134,6 +134,7 @@ public class Parser {
             case FIND:
                 String keyword = args.substring(5).trim();
                 taskList.printFoundTasks(keyword);
+                return true;
 
             default:
                 System.out.println("oops i don't understand");
