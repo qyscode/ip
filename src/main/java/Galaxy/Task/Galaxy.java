@@ -6,35 +6,51 @@ import java.util.List;
 
 import tools.Storage;
 import tools.Parser;
+import tools.Ui;
 
 
 public class Galaxy {
+    private TaskList tasks;
+	private Ui ui;
+	private final String staticFilePath;
 
-	// To follow given inheritance pattern
-	/*
-	public class Deadline extends Task {
+	public Galaxy(String filePath) {
+		staticFilePath = filePath;
+		String csvFileName = "app-data.csv"; // name of file where data is saved
+		Ui ui = new Ui();
+        Storage storage = new Storage(filePath);
+		try {
+			tasks = new TaskList();
+			//load Data from CSV
+			//Storage.readCSV("ip/src/main/data/" + csvFileName, taskList); //load data
+			storage.readCSV(filePath, tasks); //load data
+		} catch (Exception e) {
+			// ************** FIX THIS EXCEPTION *******************
+			ui.showLoadingError();
+			tasks = new TaskList();
+		}
+	}
 
-    protected String by;
-
-    public Deadline(String description, String by) {
-        super(description);
-        this.by = by;
-    }
-
-    @Override
-    public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")";
-    }
-}
-	 */
-
-	// To use polymorphism
-	/* Task[] tasks = new Task[100];
-	 tasks[0] = new Deadline("return book", "Monday");*/
+	public void run() {
+		Scanner scanner = new Scanner(System.in);
+		boolean takingInputs = true;
+		while (takingInputs) {
+			String target = scanner.nextLine(); // Read a line of text input
+			takingInputs = Parser.parseCommand(target, tasks, staticFilePath);
+			// parseCommand will return false where appropriate to end the program
+		}
+		scanner.close();
+	}
 
 	public static void main(String[] args) {
-		List<Task> taskList = new ArrayList<>();
-		String csvFileName = "app-data.csv"; // name of file where data is saved
+		new Galaxy("ip/src/main/data/" + "app-data.csv").run();
+	}
+}
+	// ********************8
+
+/*
+	public static void main(String[] args) {
+
 
 		// -- INIT --
 		//load Data from CSV
@@ -54,6 +70,6 @@ public class Galaxy {
 		}
 		scanner.close();
 	}
-}
+}*/
 
 

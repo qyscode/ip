@@ -3,6 +3,7 @@ package tools;
 import galaxy.task.Deadline;
 import galaxy.task.Task;
 import galaxy.task.Event;
+import galaxy.task.TaskList;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -45,12 +46,16 @@ public class Storage {
         }*/
     }
 
-    public static void writeToCSV(String csvFileName, List<Task> taskList) {
+    public Storage(String filePath) {
+        // initialise the Storage
+    }
+
+    public void writeToCSV(String csvFileName, TaskList taskList) {
         // note that fileNotFound does not propagate
         try (PrintWriter pw = new PrintWriter("ip/src/main/data/" + csvFileName)) {
 
-            for (int i = 0; i < taskList.size(); i++) {
-                pw.println(taskList.get(i).toCSV());
+            for (int i = 0; i < taskList.getSize(); i++) {
+                pw.println(taskList.getIdx(i).toCSV());
                 //System.out.println((i + 1) + "." + taskList.get(i).toString());
             }
             System.out.println("Save completed. Data saved to csv.");
@@ -61,7 +66,7 @@ public class Storage {
         }
     }
 
-    public static void readCSV(String csvFileName, List<Task> taskList) {
+    public void readCSV(String csvFileName, TaskList taskList) {
         try {
             File file = new File(csvFileName);
             System.out.println(file.getAbsolutePath());
@@ -93,11 +98,11 @@ public class Storage {
                     int rowLength = row.length;
                     boolean isDoneCond = Objects.equals(row[1], "T");
                     if (rowLength == 3) { // a To-Do object
-                        taskList.add(new Task(row[0], isDoneCond, row[2]));
+                        taskList.addTask(new Task(row[0], isDoneCond, row[2]));
                     } else if (rowLength == 4) { // a Deadline object
-                        taskList.add(new Deadline(row[0], isDoneCond, row[2], parseTime(row[3])));
+                        taskList.addTask(new Deadline(row[0], isDoneCond, row[2], parseTime(row[3])));
                     } else if (rowLength == 5) { // a Event object
-                        taskList.add(new Event(row[0], isDoneCond, row[2], row[3], row[4]));
+                        taskList.addTask(new Event(row[0], isDoneCond, row[2], row[3], row[4]));
                     } else {
                         throw new IllegalArgumentException("Invalid number of arguments: " + row.length);
                     }
@@ -117,8 +122,6 @@ public class Storage {
             e.printStackTrace();
         }
     }
-
-
 
 
 
