@@ -5,9 +5,7 @@ import galaxy.task.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ParserTest {
     private TaskList taskList;
@@ -21,7 +19,7 @@ public class ParserTest {
 
     @Test
     void parseCommand_todo_addsTaskToList() {
-        // Act: Run the TODO command
+        // Act: Run the "TODO" command
         boolean shouldContinue = Parser.parseCommand("todo read book", taskList, dummyCsv);
 
         // Assert:
@@ -49,5 +47,13 @@ public class ParserTest {
 
         // Assert:
         assertFalse(shouldContinue, "Program should stop (return false) after 'bye'");
+    }
+
+    @Test
+    void parseCommand_unknownCommand_throwsException() {
+        // This will fail (throw exception) because "BLAH" is not in the Enum
+        assertThrows(IllegalArgumentException.class, () -> {
+            Parser.parseCommand("hello", taskList, "test.csv");
+        });
     }
 }

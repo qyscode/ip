@@ -41,8 +41,11 @@ public class TaskList {
      * @param index The zero-based index of the task.
      */
     public void deleteIdx(int index) {
-        if (index >= 0 && index < tasks.size()) {
+        if (!tasks.isEmpty() && index >= 0 && index < tasks.size()) {
             this.tasks.remove(index);
+        } else {
+            // This provides a helpful error message for debugging
+            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds for size " + tasks.size());
         }
     }
 

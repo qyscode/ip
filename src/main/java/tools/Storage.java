@@ -1,5 +1,6 @@
 package tools;
 
+import galaxy.exceptions.DataConversionException;
 import galaxy.task.Deadline;
 import galaxy.task.Task;
 import galaxy.task.Event;
@@ -19,9 +20,11 @@ import java.util.Objects;
 import static tools.TimeParser.parseTime;
 
 public class Storage {
+    private String filePath;
+
     public static void main(String[] args) {
 
-        //String csvFileName = "app-data.csv";
+        //String csvFileName = "app-data.csv"; // name of file where data is saved
         //writeToCSV(csvFileName);
         // Sample data: a list of string arrays, each representing a row
         List<String[]> data = Arrays.asList(
@@ -48,11 +51,13 @@ public class Storage {
 
     public Storage(String filePath) {
         // initialise the Storage
+        this.filePath = filePath;
     }
 
     public void writeToCSV(String csvFileName, TaskList taskList) {
         // note that fileNotFound does not propagate
-        try (PrintWriter pw = new PrintWriter("ip/src/main/data/" + csvFileName)) {
+        try (PrintWriter pw = new PrintWriter(csvFileName)) {
+             /* "ip/src/main/data/" + csvFileName)) { */
 
             for (int i = 0; i < taskList.getSize(); i++) {
                 pw.println(taskList.getIdx(i).toCSV());
@@ -66,7 +71,7 @@ public class Storage {
         }
     }
 
-    public void readCSV(String csvFileName, TaskList taskList) {
+    public void readCSV(String csvFileName, TaskList taskList) throws IOException, DataConversionException {
         try {
             File file = new File(csvFileName);
             System.out.println(file.getAbsolutePath());
