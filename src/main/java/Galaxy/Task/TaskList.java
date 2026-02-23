@@ -3,6 +3,11 @@ package galaxy.task;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a collection of {@code Task} objects.
+ * Provides operations for adding, removing, retrieving,
+ * and searching tasks within the list.
+ */
 public class TaskList {
     private List<Task> tasks;
 
@@ -49,18 +54,32 @@ public class TaskList {
         }
     }
 
+    /**
+     * Returns the task at the specified index.
+     *
+     * @param index The zero-based index of the task.
+     * @return The task at the specified index.
+     */
     public Task getIdx(int index) {
         return this.tasks.get(index);
     }
 
     /**
-     * Gets the current number of tasks in the list.
+     * Returns the current number of tasks in the list.
+     *
+     * @return The number of tasks.
      */
     public int getSize() {
         return this.tasks.size();
     }
 
-
+    /**
+     * Finds tasks whose names contain the given keyword.
+     * Implemented using .contains()
+     *
+     * @param keyword The keyword to search for.
+     * @return A new {@code TaskList} containing matching tasks.
+     */
     public TaskList findTasks(String keyword) {
         TaskList results = new TaskList();
         for (Task task : tasks) {
@@ -71,6 +90,11 @@ public class TaskList {
         return results;
     }
 
+    /**
+     * Prints tasks whose names contain the given keyword.
+     *
+     * @param keyword The keyword to search for.
+     */
     public void printFoundTasks(String keyword) {
         TaskList matches = findTasks(keyword);
         System.out.println("____________________________________________________________");

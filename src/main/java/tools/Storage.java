@@ -19,9 +19,18 @@ import java.util.Objects;
 
 import static tools.TimeParser.parseTime;
 
+/**
+ * Handles reading from and writing to the CSV file
+ * for persistent storage of tasks.
+ */
 public class Storage {
     private String filePath;
 
+    /**
+     * Test method for experimenting with CSV writing.
+     *
+     * @param args Command line arguments.
+     */
     public static void main(String[] args) {
 
         //String csvFileName = "app-data.csv"; // name of file where data is saved
@@ -49,14 +58,24 @@ public class Storage {
         }*/
     }
 
+    /**
+     * Creates a Storage instance for the specified file path.
+     *
+     * @param filePath The path of the CSV file used for storage.
+     */
     public Storage(String filePath) {
         // initialise the Storage
         this.filePath = filePath;
     }
 
-    public void writeToCSV(String csvFileName, TaskList taskList) {
+    /**
+     * Writes the current tasks to a CSV file.
+     *
+     * @param taskList The list of tasks to be written.
+     */
+    public void writeToCSV(TaskList taskList) {
         // note that fileNotFound does not propagate
-        try (PrintWriter pw = new PrintWriter(csvFileName)) {
+        try (PrintWriter pw = new PrintWriter(this.filePath)) {
              /* "ip/src/main/data/" + csvFileName)) { */
 
             for (int i = 0; i < taskList.getSize(); i++) {
@@ -71,6 +90,16 @@ public class Storage {
         }
     }
 
+    /**
+     * Reads tasks from a CSV file and loads them into the given TaskList.
+     * If the file or its parent directory does not exist,
+     * they will be created automatically.
+     *
+     * @param csvFileName The name of the CSV file.
+     * @param taskList The TaskList to populate with loaded tasks.
+     * @throws IOException If an I/O error occurs.
+     * @throws DataConversionException If the data format is invalid.
+     */
     public void readCSV(String csvFileName, TaskList taskList) throws IOException, DataConversionException {
         try {
             File file = new File(csvFileName);
@@ -112,12 +141,6 @@ public class Storage {
                         throw new IllegalArgumentException("Invalid number of arguments: " + row.length);
                     }
                 }
-            } catch (FileNotFoundException e) {
-                System.out.println("Error: File not found.");
-                e.printStackTrace();
-            } catch (IOException e) { //IO is a parent of fileNotFound
-                System.out.println("Error: File could not be closed.");
-                e.printStackTrace();
             }
 
             System.out.println("Data loaded from CSV: " + file.getAbsolutePath());

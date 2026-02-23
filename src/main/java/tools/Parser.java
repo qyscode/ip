@@ -8,28 +8,42 @@ import galaxy.task.TaskList;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Parses user input commands and executes the corresponding actions
+ * on the TaskList. This class acts as the command dispatcher of the application.
+ */
 public class Parser {
 
-    /**
+    /*
      * These are common, repeated output announcements generalized to reduce duplication.
      * emptyErrorMsg: prints a message for when the arg is empty.
      * listCount: prints a message indicating the updated number of tasks (after actions).
      */
+
+    /**
+     * Prints an error message when the task description is empty.
+     */
     private static void emptyErrorMsg() {
         System.out.println("oops your description cannot be empty");
     }
-    private static void listCount(TaskList arrayList) {
-        System.out.println("Now you have " + arrayList.getSize() + " tasks in the list.");
+
+    /**
+     * Prints the updated number of tasks after a modification.
+     *
+     * @param taskList The current task list.
+     */
+    private static void listCount(TaskList taskList) {
+        System.out.println("Now you have " + taskList.getSize() + " tasks in the list.");
     }
 
     /**
-     * Parses the input commands and decides the logic with which to proceed.
-     * Returns a boolean indicating whether the app should continue running. (Continue if: true)
+     * Parses the given user input and executes the corresponding command.
      *
-     * @param args input String with commands.
-     * @param taskList the current state of list of Task objects.
-     * @param csvFileName the desired file name of the csv file where data will be stored.
-     * @return whether the program should continue.
+     * @param args The full user input string.
+     * @param taskList The current state of list of tasks.
+     * @param csvFileName The file used for persistent storage.
+     * @return {@code true} if the program should continue running,
+     *         {@code false} if the program should terminate.
      */
     public static boolean parseCommand(String args, TaskList taskList, String csvFileName) {
 
@@ -50,7 +64,7 @@ public class Parser {
         switch(command) {
             case BYE:
                 Storage storage = new Storage(csvFileName);
-                storage.writeToCSV(csvFileName, taskList);
+                storage.writeToCSV(taskList);
                 System.out.println("____________________________________________________________\n" +
                         "Bye. Hope to see you again soon!" +
                         "____________________________________________________________");
