@@ -118,7 +118,8 @@ public class Parser {
 
                 String deadline = args.substring(args.indexOf("/by") + 4).trim();
                 LocalDateTime dateTime = TimeParser.parseTime(deadline);
-                if (dateTime == null) { return false; }; // parsing failed
+                assert dateTime != null : "TimeParser returned null unexpectedly"; // AI was used to come up
+                // with simple assumptions for assert statements
 
                 Task newDeadline = new Deadline(deadlineName, false, "D", dateTime);
                 taskList.addTask(newDeadline);

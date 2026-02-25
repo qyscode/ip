@@ -9,6 +9,7 @@ import tools.Storage;
 import tools.Parser;
 import tools.Ui;
 
+// AI was used to write first iteration of Javadoc comments before I check them.
 /**
  * Main entry point of the Galaxy task management application.
  * This class initializes storage, loads saved tasks,

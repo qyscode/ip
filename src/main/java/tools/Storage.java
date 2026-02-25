@@ -127,8 +127,9 @@ public class Storage {
                 while ((line = br.readLine()) != null) {
                     // process each line
                     String[] row = line.split(","); // simple CSV parsing
-                    // TODO: convert row into Task objects or store in a list
 
+                    assert row.length >= 3 && row.length < 6 : "Task is stored incorrectly. Number of arguments" +
+                            "does not match"; // AI was used to come up with simple assumptions for assert statements
                     int rowLength = row.length;
                     boolean isDoneCond = Objects.equals(row[1], "T");
                     if (rowLength == 3) { // a To-Do object

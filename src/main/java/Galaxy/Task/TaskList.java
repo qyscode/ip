@@ -38,6 +38,8 @@ public class TaskList {
      * Adds a task to the list.
      */
     public void addTask(Task task) {
+        assert (task != null) : "This is a null pointer [Task object]"; // AI was used to come up with
+        // simple assumptions for assert statements
         this.tasks.add(task);
     }
 
@@ -61,6 +63,8 @@ public class TaskList {
      * @return The task at the specified index.
      */
     public Task getIdx(int index) {
+        assert index >= 0 && index < tasks.size(); // AI was used to come up with
+        // simple assumptions for assert statements
         return this.tasks.get(index);
     }
 
@@ -81,9 +85,15 @@ public class TaskList {
      * @return A new {@code TaskList} containing matching tasks.
      */
     public TaskList findTasks(String keyword) {
+        assert keyword != null && !keyword.isBlank() : "Keyword should not be null";
+        assert keyword.matches("[a-zA-Z]+")
+                : "Keyword should contain only alphabets"; // NO spec chars or ints
+        // AI was used to come up with simple assumptions for assert statements. In this case, it
+        // came up with the regex code for keyword.matches() after being prompted for only alphabets.
         TaskList results = new TaskList();
         for (Task task : tasks) {
-            if (task.getName().toLowerCase().contains(keyword.toLowerCase())) {
+            if (task.getName().toLowerCase().contains(keyword.toLowerCase())) { // AI was used to write this line
+                // saving the effort to think of the methods needed and their logic
                 results.addTask(task);
             }
         }
