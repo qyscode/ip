@@ -105,20 +105,19 @@ public class TaskList {
      *
      * @param keyword The keyword to search for.
      */
-    public void printFoundTasks(String keyword) {
+    public String printFoundTasks(String keyword) {
         TaskList matches = findTasks(keyword);
-        System.out.println("____________________________________________________________");
         if (matches.getSize() == 0) {
-            System.out.println("No matching tasks found.");
+            return "No matching tasks found.";
         } else {
-            System.out.println("Here are the matching tasks in your list:");
+            String output = "Here are the matching tasks in your list:\n";
             int index = 1;
             for (Task task : matches.getList()) {
-                System.out.println(index + "." + task.toString());
+                output = output.concat(index + "." + task + "\n");
                 index++;
             }
+            return output;
         }
-        System.out.println("____________________________________________________________");
     }
 
 }

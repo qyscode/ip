@@ -23,8 +23,8 @@ public class Parser {
     /**
      * Prints an error message when the task description is empty.
      */
-    private static void emptyErrorMsg() {
-        System.out.println("oops your description cannot be empty");
+    private static String emptyErrorMsg() {
+        return "oops your description cannot be empty";
     }
 
     /**
@@ -32,8 +32,8 @@ public class Parser {
      *
      * @param taskList The current task list.
      */
-    private static void listCount(TaskList taskList) {
-        System.out.println("Now you have " + taskList.getSize() + " tasks in the list.");
+    private static String listCount(TaskList taskList) {
+        return "Now you have " + taskList.getSize() + " tasks in the list.";
     }
 
     /**
@@ -45,7 +45,7 @@ public class Parser {
      * @return {@code true} if the program should continue running,
      *         {@code false} if the program should terminate.
      */
-    public static boolean parseCommand(String args, TaskList taskList, String csvFileName) {
+    public static String parseCommand(String args, TaskList taskList, String csvFileName) {
 
         enum Commands {
             BYE,
@@ -58,62 +58,67 @@ public class Parser {
             EVENT,
             FIND
         }
+        String[] parts = args.trim().split("\\s+");
+        String firstWord = parts[0].toUpperCase();
+        Commands command;
+        try {
+            command = Commands.valueOf(firstWord);
+        } catch (IllegalArgumentException e) {
+            // This catches "HI" or any other non-existent command
+            return "oops i don't understand";
+        }
 
-        Commands command = Commands.valueOf(args.trim().split("\\s+")[0].toUpperCase());
 
         switch(command) {
             case BYE:
                 Storage storage = new Storage(csvFileName);
-                storage.writeToCSV(taskList);
-                System.out.println("____________________________________________________________\n" +
-                        "Bye. Hope to see you again soon!" +
-                        "____________________________________________________________");
-                return false;
+                String writeStatus = storage.writeToCSV(taskList);
+                String exitMessage = "Bye. Hope to see you again soon!";
+                return writeStatus + "\n" + exitMessage;
 
             case LIST:
-                System.out.println("Here are the tasks in your list:");
+                String output = "Here are the tasks in your list:\n";
                 for (int i = 0; i < taskList.getSize(); i++) {
-                    System.out.println((i + 1) + "." + taskList.getIdx(i).toString());
+                    output = output.concat((String.valueOf(i + 1)) + "." + taskList.getIdx(i).toString());
+                    output = output + "\n";
                 }
-                return true;
+                return output;
 
             case DELETE:
                 int removalIndex = Integer.parseInt(args.substring(7));
                 Task taskRelevant = taskList.getIdx(removalIndex - 1);
                 taskList.deleteIdx(removalIndex - 1);
-                System.out.println("Noted. I've removed this task:\n " + taskRelevant.toString());
-                return true;
+                return "Noted. I've removed this task:\n " + taskRelevant.toString();
 
             case MARK:
                 int idxM = Integer.parseInt(args.substring(5));
                 taskList.getIdx(idxM - 1).setDone(true);
-                System.out.println("Nice! I've marked this task as done:\n [X] " + taskList.getIdx(idxM - 1).getName());
-                return true;
+                return "Nice! I've marked this task as done:\n [X] " + taskList.getIdx(idxM - 1).getName();
 
             case UNMARK:
                 int idxUm = Integer.parseInt(args.substring(7));
                 taskList.getIdx(idxUm - 1).setDone(false);
-                System.out.println("OK, I've marked this task as not done yet:\n [ ] " +
-                        taskList.getIdx(idxUm - 1).getName());
-                return true;
+                return "OK, I've marked this task as not done yet:\n [ ] " +
+                        taskList.getIdx(idxUm - 1).getName();
 
             case TODO:
                 String taskName = args.subSequence(4, args.length()).toString().trim();
+
                 if (taskName.isEmpty()) {
-                    emptyErrorMsg();
+                    return emptyErrorMsg();
                 }
+
                 Task newTask = new Task(taskName, false, "T");
                 taskList.addTask(newTask);
-                System.out.println("Got it. I've added this task:\n " +
-                        newTask.toString());
-                //"[" + "T" + "][" + newTask.getCondition() + "] " + taskName);
-                listCount(taskList);
-                return true;
+
+                return "Got it. I've added this task:\n " +
+                        newTask + "\n" +
+                        listCount(taskList);
 
             case DEADLINE:
                 String deadlineName = args.substring(8, args.indexOf("/")).trim();
                 if (deadlineName.isEmpty()) {
-                    emptyErrorMsg();
+                    return emptyErrorMsg();
                 }
 
                 String deadline = args.substring(args.indexOf("/by") + 4).trim();
@@ -123,37 +128,33 @@ public class Parser {
 
                 Task newDeadline = new Deadline(deadlineName, false, "D", dateTime);
                 taskList.addTask(newDeadline);
-                System.out.println("Got it. I've added this task:\n " +
-                        newDeadline.toString());
-                //"[" + "D" + "][" + newTask.getCondition() + "] " + deadlineName + " (by: " + deadline + ")");
-                listCount(taskList);
-                return true;
+
+                return "Got it. I've added this task:\n " +
+                        newDeadline + "\n" + listCount(taskList);
 
             case EVENT:
                 String eventName = args.substring(5, args.indexOf("/")).trim();
+
                 if (eventName.isEmpty()) {
-                    emptyErrorMsg();
+                    return emptyErrorMsg();
                 }
+
                 String split = args.substring(args.indexOf("/") + 1).trim();
                 String eventStart = split.substring(5, split.indexOf("/") - 1).trim();
                 String eventEnd = split.substring(split.indexOf("/") + 4).trim();
 
                 Task newEvent = new Event(eventName, false, "E", eventEnd, eventStart);
                 taskList.addTask(newEvent);
-                System.out.println("Got it. I've added this task:\n " +
-                        newEvent.toString());
-                //"[" + "D" + "][" + newEvent.getCondition() + "] " + taskName + " (by: " + deadline + ")");
-                listCount(taskList);
-                return true;
+
+                return "Got it. I've added this task:\n " +
+                        newEvent + "\n" + listCount(taskList);
 
             case FIND:
                 String keyword = args.substring(5).trim();
-                taskList.printFoundTasks(keyword);
-                return true;
+                return taskList.printFoundTasks(keyword);
 
             default:
-                System.out.println("oops i don't understand");
-                return true;
+                return "oops i don't understand";
         }
     }
 

@@ -11,7 +11,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.File;
+
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -73,7 +76,7 @@ public class Storage {
      *
      * @param taskList The list of tasks to be written.
      */
-    public void writeToCSV(TaskList taskList) {
+    public String writeToCSV(TaskList taskList) {
         // note that fileNotFound does not propagate
         try (PrintWriter pw = new PrintWriter(this.filePath)) {
              /* "ip/src/main/data/" + csvFileName)) { */
@@ -82,11 +85,19 @@ public class Storage {
                 pw.println(taskList.getIdx(i).toCSV());
                 //System.out.println((i + 1) + "." + taskList.get(i).toString());
             }
-            System.out.println("Save completed. Data saved to csv.");
+
+            return "Save completed. Data saved to CSV.";
 
         } catch (FileNotFoundException e) {
-            System.out.println("Error: File not found.");
-            e.printStackTrace();
+            // body of catch block written by AI
+            // prompt: "String output = "Error: File not found.\n" + e.printStackTrace();"
+            // asking AI to convert printStackTrace() to String suitable format for output
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            return "Error: File not found.\n" + sw;
+        } catch (Exception e) {
+            return "An unexpected error occurred: " + e.getMessage();
         }
     }
 

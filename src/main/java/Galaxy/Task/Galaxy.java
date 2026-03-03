@@ -20,15 +20,6 @@ public class Galaxy {
 	private final String finalFilePath;
 
 	/**
-	 * Starts the Galaxy application.
-	 *
-	 * @param args Command line arguments (not used).
-	 */
-	public static void main(String[] args) {
-		new Galaxy("src/main/data/" + "app-data.csv").run();
-	}
-
-	/**
 	 * Creates a new Galaxy application instance.
 	 * Loads existing tasks from the specified file path.
 	 *
@@ -57,10 +48,24 @@ public class Galaxy {
 	}
 
 	/**
+	 * Generates a response for the user's chat message.
+	 */
+	public String getResponse(String input) {
+		try {
+			return Parser.parseCommand(input, tasks, finalFilePath);
+		} catch (Exception e) {
+			return "Oops! " + e.getMessage();
+		}
+	}
+
+
+	/*
 	 * Starts the main program loop.
 	 * Continuously reads user input and processes commands
 	 * until termination is requested.
-	 */
+
+	 **Deprecated CLI Logic**
+
 	public void run() {
 		Scanner scanner = new Scanner(System.in);
 		boolean takingInputs = true;
@@ -70,7 +75,7 @@ public class Galaxy {
 			// parseCommand will return false where appropriate to end the program
 		}
 		scanner.close();
-	}
+	}*/
 }
 
 
