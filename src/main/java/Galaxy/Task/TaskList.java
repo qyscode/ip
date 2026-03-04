@@ -19,26 +19,11 @@ public class TaskList {
     }
 
     /**
-     * Constructor for loading existing tasks from storage.
-     * @param tasks A list of Task objects loaded from CSV.
-     */
-    public TaskList(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    /**
-     * Returns the underlying List for compatibility with your existing Parser.
-     * @return The list of tasks.
-     */
-    public List<Task> getList() {
-        return this.tasks;
-    }
-
-    /**
      * Adds a task to the list.
      */
     public void addTask(Task task) {
-        assert (task != null) : "This is a null pointer [Task object]"; // AI was used to come up with
+        assert (task != null) : "This is a null pointer [Task object]";
+        // AI was used to come up with
         // simple assumptions for assert statements
         this.tasks.add(task);
     }
@@ -51,8 +36,8 @@ public class TaskList {
         if (!tasks.isEmpty() && index >= 0 && index < tasks.size()) {
             this.tasks.remove(index);
         } else {
-            // This provides a helpful error message for debugging
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds for size " + tasks.size());
+            throw new IndexOutOfBoundsException("Index " + index +
+                    " is out of bounds for size " + tasks.size());
         }
     }
 

@@ -20,7 +20,7 @@ public class Deadline extends Task {
      */
     public Deadline(String deadlineName, boolean isDone, String taskType, LocalDateTime deadline) {
         super(deadlineName, isDone, taskType);
-	    this.deadline = deadline;
+        this.deadline = deadline;
     }
 
     /**

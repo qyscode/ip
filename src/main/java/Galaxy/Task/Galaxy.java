@@ -8,7 +8,6 @@ import java.io.StringWriter;
 import galaxy.exceptions.DataConversionException;
 import tools.Storage;
 import tools.Parser;
-import tools.Ui;
 
 // AI was used to write first iteration of Javadoc comments before I check them.
 /**
@@ -30,13 +29,12 @@ public class Galaxy {
 	 */
 	public Galaxy(String filePath) {
 		finalFilePath = filePath;
-		Ui ui = new Ui();
 		Storage storage = new Storage(filePath);
 
 		try {
 			tasks = new TaskList();
-			//load Data from CSV
-			initResponse = initResponse.concat(storage.readCSV(filePath, tasks)); //load data
+			// load Data from CSV
+			initResponse = initResponse.concat(storage.readCSV(filePath, tasks));
 		} catch (FileNotFoundException fe) {
 			initResponse = initResponse.concat("Error: File not found.\n");
 			StringWriter sw = new StringWriter();
@@ -72,25 +70,6 @@ public class Galaxy {
 			return "Oops! " + e.getMessage();
 		}
 	}
-
-
-	/*
-	 * Starts the main program loop.
-	 * Continuously reads user input and processes commands
-	 * until termination is requested.
-
-	 **Deprecated CLI Logic**
-
-	public void run() {
-		Scanner scanner = new Scanner(System.in);
-		boolean takingInputs = true;
-		while (takingInputs) {
-			String target = scanner.nextLine(); // Read a line of text input
-			takingInputs = Parser.parseCommand(target, tasks, finalFilePath);
-			// parseCommand will return false where appropriate to end the program
-		}
-		scanner.close();
-	}*/
 }
 
 

@@ -6,19 +6,12 @@ import galaxy.task.Task;
 import galaxy.task.TaskList;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Parses user input commands and executes the corresponding actions
  * on the TaskList. This class acts as the command dispatcher of the application.
  */
 public class Parser {
-
-    /*
-     * These are common, repeated output announcements generalized to reduce duplication.
-     * emptyErrorMsg: prints a message for when the arg is empty.
-     * listCount: prints a message indicating the updated number of tasks (after actions).
-     */
 
     /**
      * Prints an error message when the task description is empty.
@@ -66,8 +59,8 @@ public class Parser {
         try {
             command = Commands.valueOf(firstWord);
         } catch (IllegalArgumentException e) {
-            // This catches "HI" or any other non-existent command
-            return "oops i don't understand";
+            // This catches non-existent commands e.g. "hi"
+            return "oops i don't understand sia";
         }
 
 
