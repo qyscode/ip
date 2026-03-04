@@ -1,26 +1,68 @@
-# Duke project template
+# Galaxy User Guide
+Galaxy is a task management app that keeps track of all the things in the universe that you have to do. You can add regular tasks, tasks with deadlines, or events (which have a start and end date).
+<img alt="Product sample screenshot" src="Ui.png" width="300">
 
-This is a project template for a greenfield Java project. It's named after the Java mascot _Duke_. Given below are instructions on how to use it.
+## Adding deadlines
 
-## Setting up in Intellij
+### todo
+A todo is a regular task you have to do.<br>
+Usage: <mark>`todo`</mark> `<description>`<br>
+Example: `todo read book`
 
-Prerequisites: JDK 17, update Intellij to the most recent version.
+Expected output:
+```
+Got it. I've added this task:
+[T][ ] read book
+Now you have 1 tasks in the list.
+```
 
-1. Open Intellij (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project first)
-1. Open the project into Intellij as follows:
-   1. Click `Open`.
-   1. Select the project directory, and click `OK`.
-   1. If there are any further prompts, accept the defaults.
-1. Configure the project to use **JDK 17** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
-   In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate the `src/main/java/Duke.java` file, right-click it, and choose `Run Duke.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
-   ```
-   Hello from
-    ____        _        
-   |  _ \ _   _| | _____ 
-   | | | | | | | |/ / _ \
-   | |_| | |_| |   <  __/
-   |____/ \__,_|_|\_\___|
-   ```
+### deadline
+A deadline is a regular task you have to do, but with a deadline.
+Usage: <mark>`deadline`</mark> `<description> /by <YYYY-MM-DD HHmm>`   
+Example: `deadline return book /by 2026-03-16 1800`
 
-**Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+Expected output:
+```
+Got it. I've added this task:
+ [D][ ] return book (by: Mar 15 2026, 6:00PM)
+Now you have 2 tasks in the list.
+```
+
+### event
+An event is a task with a start and end date.
+Usage: <mark>`event`</mark> `<description> /from <start> /to <end>`   
+Example: `event project meeting /from Mon 2pm /to 4pm`
+
+Expected output:
+```
+Got it. I've added this task:
+ [E][ ] project meeting (from: Mon 2pm to: 4pm)
+Now you have 3 tasks in the list.
+```
+
+## Management Features
+
+### list
+Usage: <mark>`list`</mark>
+This *lists* all your current tasks.
+
+### mark/unmark
+Usage: <mark>`list`</mark> `<index>`<br>
+This *marks/unmarks* the task at the given index as done/not done respectively.
+This should be used after `list` to see identify the index of the task which you want to *mark/unmark*.
+
+### delete
+Usage: <mark>`delete`</mark> `<index>`
+This *deletes* the task at the given index.
+This should be used after `list` to see identify the index of the task which you want to *delete*.
+
+### find
+Usage: <mark>`delete`</mark> `<keyword>`<br>
+This searches the list of tasks for all tasks that contain the given keyword.
+
+
+## Saving/Closing
+### bye
+Usage: <mark>`bye`</mark><br>
+This saves the current state of the list of tasks to the CSV file.
+Note that without this action, your progress will NOT be saved.
