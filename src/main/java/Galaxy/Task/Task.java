@@ -83,8 +83,7 @@ public class Task  {
         if (this.priority != -1) {
             priorityStatement = "\n(Priority: " + this.priority + ")";
         }
-        return "[" + "T" + "][" + this.getCondition() + "] " + this.getName() +
-                priorityStatement;
+        return "[" + "T" + "][" + this.getCondition() + "] " + this.getName() + priorityStatement;
     }
 
     /**
