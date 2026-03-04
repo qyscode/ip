@@ -11,6 +11,7 @@ public class Task  {
     private final String taskType;
     private final String taskName;
     private boolean isDone;
+    private int priority = -1;
 
     /**
      * Creates a Task with the given name, completion status, and type.
@@ -78,17 +79,39 @@ public class Task  {
      * @return Formatted string representing this task.
      */
     public String toString() {
-        return "[" + "T" + "][" + this.getCondition() + "] " + this.getName();
+        String priorityStatement = "";
+        if (this.priority != -1) {
+            priorityStatement = "\n(Priority: " + this.priority + ")";
+        }
+        return "[" + "T" + "][" + this.getCondition() + "] " + this.getName() +
+                priorityStatement;
     }
 
     /**
      * Converts this task into a CSV-formatted string
      * for file storage.
+     * Format: taskName,isDone,taskType,priority
      *
-     * @return CSV representation of this task.
+     * @return A comma-separated string (CSV) representing the task's state.
      */
     public String toCSV() {
         String isDoneCond = this.isDone() ? "T" : "F";
-        return this.taskName + "," + isDoneCond + "," + this.taskType;
+        return this.taskName + "," + isDoneCond + "," + this.taskType +  "," + this.priority;
+    }
+
+    /**
+     * Updates the priority level of the task.
+     * * @param n An integer representing priority. Use -1 for no priority.
+     */
+    public void setPriority(int n) {
+        this.priority = n;
+    }
+
+    /**
+     * Retrieves the priority as a String.
+     * * @return The priority level, or an empty string if no priority is set (-1).
+     */
+    public int getPriority() {
+        return this.priority;
     }
 }

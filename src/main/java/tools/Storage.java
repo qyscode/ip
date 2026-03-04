@@ -14,10 +14,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.File;
 
-
-
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 import static tools.TimeParser.parseTime;
@@ -27,47 +23,14 @@ import static tools.TimeParser.parseTime;
  * for persistent storage of tasks.
  */
 public class Storage {
-    private String filePath;
+    private final String filePath;
 
     /**
-     * Test method for experimenting with CSV writing.
-     *
-     * @param args Command line arguments.
-     */
-    public static void main(String[] args) {
-
-        //String csvFileName = "app-data.csv"; // name of file where data is saved
-        //writeToCSV(csvFileName);
-        // Sample data: a list of string arrays, each representing a row
-        List<String[]> data = Arrays.asList(
-                new String[]{"Name", "Age", "City"},
-                new String[]{"John Doe", "30", "New York"},
-                new String[]{"Jane Smith", "25", "London"},
-                new String[]{"Bob Johnson", "35", "Paris"}
-        );
-
-        // Use try-with-resources for automatic resource management
-        /*
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(csvFileName))) {
-            for (String[] row : data) {
-                // Join array elements with a comma (',') delimiter
-                String csvLine = String.join(",", row);
-                bw.write(csvLine);
-                bw.newLine(); // Add a newline character after each record
-            }
-            System.out.println("CSV file written successfully: " + csvFileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-    }
-
-    /**
-     * Creates a Storage instance for the specified file path.
+     * Initializes/Creates a Storage instance with the specified file path (Note: Final).
      *
      * @param filePath The path of the CSV file used for storage.
      */
     public Storage(String filePath) {
-        // initialise the Storage
         this.filePath = filePath;
     }
 
@@ -76,26 +39,27 @@ public class Storage {
      *
      * @param taskList The list of tasks to be written.
      */
+    // note that fileNotFound does not propagate
     public String writeToCSV(TaskList taskList) {
-        // note that fileNotFound does not propagate
         try (PrintWriter pw = new PrintWriter(this.filePath)) {
-             /* "ip/src/main/data/" + csvFileName)) { */
 
             for (int i = 0; i < taskList.getSize(); i++) {
+                // iterates through each task and prints each task data
+                // as comma separated values
                 pw.println(taskList.getIdx(i).toCSV());
-                //System.out.println((i + 1) + "." + taskList.get(i).toString());
             }
 
             return "Save completed. Data saved to CSV.";
 
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException fe) {
             // body of catch block written by AI
             // prompt: "String output = "Error: File not found.\n" + e.printStackTrace();"
             // asking AI to convert printStackTrace() to String suitable format for output
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
+            fe.printStackTrace(pw);
             return "Error: File not found.\n" + sw;
+
         } catch (Exception e) {
             return "An unexpected error occurred: " + e.getMessage();
         }
@@ -111,16 +75,18 @@ public class Storage {
      * @throws IOException If an I/O error occurs.
      * @throws DataConversionException If the data format is invalid.
      */
-    public void readCSV(String csvFileName, TaskList taskList) throws IOException, DataConversionException {
+    public String readCSV(String csvFileName, TaskList taskList) throws IOException, DataConversionException {
+        String response = "";
+
         try {
             File file = new File(csvFileName);
-            System.out.println(file.getAbsolutePath());
+
             // Ensure parent folder exists
             File parentDir = file.getParentFile();
             if (parentDir != null && !parentDir.exists()) {
                 boolean created = parentDir.mkdirs();
                 if (created) {
-                    System.out.println("Created missing folder: " + parentDir.getAbsolutePath());
+                    response = response.concat("Created missing folder: " + parentDir.getAbsolutePath()+"\n");
                 }
             }
 
@@ -128,7 +94,7 @@ public class Storage {
             if (!file.exists()) {
                 boolean created = file.createNewFile();
                 if (created) {
-                    System.out.println("Created new empty file: " + file.getAbsolutePath());
+                    response = response.concat("Created new empty file: " + file.getAbsolutePath()+"\n");
                 }
             }
 
@@ -155,12 +121,13 @@ public class Storage {
                 }
             }
 
-            System.out.println("Data loaded from CSV: " + file.getAbsolutePath());
+            response = response.concat("Data loaded from CSV: " + file.getAbsolutePath()+"\n");
 
         } catch (IOException e) {
-            System.out.println("Error accessing the CSV file.");
+            response = response.concat("Error accessing the CSV file.");
             e.printStackTrace();
         }
+        return response;
     }
 
 

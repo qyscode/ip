@@ -20,7 +20,7 @@ public class TaskList {
 
     /**
      * Constructor for loading existing tasks from storage.
-     * @param tasks A list of Task objects loaded from your CSV.
+     * @param tasks A list of Task objects loaded from CSV.
      */
     public TaskList(List<Task> tasks) {
         this.tasks = tasks;
@@ -78,46 +78,30 @@ public class TaskList {
     }
 
     /**
-     * Finds tasks whose names contain the given keyword.
-     * Implemented using .contains()
+     * Searches the TaskList for tasks that contain the specified keyword in their names and
+     * formats them into a list, with their corresponding indices for display.
      *
-     * @param keyword The keyword to search for.
-     * @return A new {@code TaskList} containing matching tasks.
-     */
-    public TaskList findTasks(String keyword) {
-        assert keyword != null && !keyword.isBlank() : "Keyword should not be null";
-        assert keyword.matches("[a-zA-Z]+")
-                : "Keyword should contain only alphabets"; // NO spec chars or ints
-        // AI was used to come up with simple assumptions for assert statements. In this case, it
-        // came up with the regex code for keyword.matches() after being prompted for only alphabets.
-        TaskList results = new TaskList();
-        for (Task task : tasks) {
-            if (task.getName().toLowerCase().contains(keyword.toLowerCase())) { // AI was used to write this line
-                // saving the effort to think of the methods needed and their logic
-                results.addTask(task);
-            }
-        }
-        return results;
-    }
-
-    /**
-     * Prints tasks whose names contain the given keyword.
-     *
-     * @param keyword The keyword to search for.
+     * @param keyword The alphabetic sequence to search for; must not be null or blank.
+     * @return A formatted String of matching tasks, or a "not found" message if no matches exist.
+     * @throws AssertionError if the keyword is null, blank, or contains non-alphabetic characters.
      */
     public String printFoundTasks(String keyword) {
-        TaskList matches = findTasks(keyword);
-        if (matches.getSize() == 0) {
-            return "No matching tasks found.";
-        } else {
-            String output = "Here are the matching tasks in your list:\n";
-            int index = 1;
-            for (Task task : matches.getList()) {
-                output = output.concat(index + "." + task + "\n");
-                index++;
-            }
-            return output;
-        }
-    }
+        assert keyword != null && !keyword.isBlank()
+                : "Keyword should not be null";
+        assert keyword.matches("[a-zA-Z]+") // AI used to generate  this regex
+                : "Keyword should contain only alphabets"; // NO spec chars or ints
 
+        String output = "Here are the matching tasks in your list:\n";
+
+        for (int i = 0; i < this.tasks.size(); i++) {
+            Task task = this.getIdx(i);
+            if (task.getName().toLowerCase().contains(keyword.toLowerCase())) { // AI was used to write this line
+                output = output.concat(String.valueOf(i + 1) + ". " + task + "\n");
+            }
+        }
+        if (output.equals("Here are the matching tasks in your list:\n")) {
+            return "No matching tasks found.";
+        }
+        return output;
+    }
 }

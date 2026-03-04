@@ -22,6 +22,7 @@ public class Parser {
 
     /**
      * Prints an error message when the task description is empty.
+     * This method is extracted out due to repeated use.
      */
     private static String emptyErrorMsg() {
         return "oops your description cannot be empty";
@@ -29,7 +30,7 @@ public class Parser {
 
     /**
      * Prints the updated number of tasks after a modification.
-     *
+     * This method is extracted out due to repeated use.
      * @param taskList The current task list.
      */
     private static String listCount(TaskList taskList) {
@@ -56,7 +57,8 @@ public class Parser {
             TODO,
             DEADLINE,
             EVENT,
-            FIND
+            FIND,
+            PRIORITY
         }
         String[] parts = args.trim().split("\\s+");
         String firstWord = parts[0].toUpperCase();
@@ -152,6 +154,27 @@ public class Parser {
             case FIND:
                 String keyword = args.substring(5).trim();
                 return taskList.printFoundTasks(keyword);
+
+            case PRIORITY:
+                if (parts.length < 3) {
+                    return "Error, use format: priority <idx> p=<level>'";
+                }
+                try {
+                    // task index
+                    int idxP = Integer.parseInt(parts[1]);
+
+                    // Parse the priority level (removes "p=" from "p=1")
+                    int p = Integer.parseInt(parts[2].replace("p=", ""));
+
+                    taskList.getIdx(idxP - 1).setPriority(p);
+
+                    Task relTask = taskList.getIdx(idxP - 1);
+                    relTask.setPriority(p);
+                    return String.format("Priority updated! Task " + relTask.getName()
+                            + " is now priority %d.", p);
+                } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                    return "Error, use format: priority <idx> p=<level>";
+                }
 
             default:
                 return "oops i don't understand";

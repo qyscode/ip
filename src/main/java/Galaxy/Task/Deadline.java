@@ -40,8 +40,13 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
+        String priorityStatement = "";
+        if (this.getPriority() != -1) {
+            priorityStatement = "\n(Priority: " + this.getPriority() + ")";
+        }
         return "[" + "D" + "][" + this.getCondition() + "] " +
-                this.getName() + " (by: " + this.getDeadline() + ")";
+                this.getName() + " (by: " + this.getDeadline() + ")" +
+                priorityStatement;
     }
 
     /**
@@ -54,6 +59,8 @@ public class Deadline extends Task {
     @Override
     public String toCSV() {
         String isDoneCond = this.isDone() ? "T" : "F";
-        return this.getName() + "," + isDoneCond + "," + this.taskType() + "," + this.deadline;
+        return this.getName() + "," + isDoneCond + "," +
+                this.taskType() + "," + this.getPriority() +
+                "," + this.deadline;
     }
 }

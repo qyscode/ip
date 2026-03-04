@@ -49,8 +49,13 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
+        String priorityStatement = "";
+        if (this.getPriority() != -1) {
+            priorityStatement = "\n(Priority: " + this.getPriority() + ")";
+        }
         return "[" + "E" + "][" + this.getCondition() + "] "
-                + this.getName() + " (from: " + this.getStart() + " to: " + this.getEnd() + ")";
+                + this.getName() + " (from: " + this.getStart() + " to: " + this.getEnd() + ")"
+                + priorityStatement;
 
     }
 
@@ -64,7 +69,7 @@ public class Event extends Task {
     public String toCSV() {
         String isDoneCond = this.isDone() ? "T" : "F";
         return this.getName() + "," + isDoneCond + "," + this.taskType() +
-                "," + this.start + "," + this.end;
+                "," + this.getPriority() + "," + this.start + "," + this.end;
     }
 }
 

@@ -2,7 +2,8 @@ package galaxy.task;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import galaxy.exceptions.DataConversionException;
 import tools.Storage;
@@ -19,6 +20,8 @@ public class Galaxy {
 	private TaskList tasks;
 	private final String finalFilePath;
 
+	private String initResponse = "";
+
 	/**
 	 * Creates a new Galaxy application instance.
 	 * Loads existing tasks from the specified file path.
@@ -29,22 +32,34 @@ public class Galaxy {
 		finalFilePath = filePath;
 		Ui ui = new Ui();
 		Storage storage = new Storage(filePath);
-		// Startup message
-		System.out.println("____________________________________________________________");
-		System.out.println("Hello! I'm Galaxy");
-		System.out.println("I can save all the tasks in the galaxy. What can I do for you?");
+
 		try {
 			tasks = new TaskList();
 			//load Data from CSV
-			storage.readCSV(filePath, tasks); //load data
+			initResponse = initResponse.concat(storage.readCSV(filePath, tasks)); //load data
 		} catch (FileNotFoundException fe) {
-			System.out.println("Error: File not found.");
-			fe.printStackTrace();
+			initResponse = initResponse.concat("Error: File not found.\n");
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			fe.printStackTrace(pw);
+			initResponse = initResponse.concat(sw+"\n");
 		} catch (IOException | DataConversionException e) {
 			// For "cannot read file" issues
-			ui.showLoadingError();
+			initResponse = initResponse.concat("Encountered: IOException or DataConversionException"+"\n");
 			this.tasks = new TaskList(); // Fallback to empty list
 		}
+	}
+
+	/**
+	 * Returns the initialization response message.
+
+	 * @return A string representing the result of the initialization process,
+	 * error messages and file locations if unsuccessful;
+	 * success load messages if successful.
+	 * Empty string by default.
+	 */
+	public String getInitResponse() {
+		return initResponse;
 	}
 
 	/**

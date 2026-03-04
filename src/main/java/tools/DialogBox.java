@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 
 /**
  * Represents a dialog box consisting of an ImageView to represent the speaker's face
@@ -36,6 +37,11 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         displayPicture.setImage(img);
+        dialog.setWrapText(true);
+        dialog.setMinWidth(50);
+        dialog.setMaxWidth(280);
+        this.setMinWidth(Region.USE_PREF_SIZE);
+        this.setMaxWidth(Double.MAX_VALUE);
     }
 
     /**
