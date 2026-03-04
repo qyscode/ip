@@ -33,6 +33,13 @@ public class MainWindow {
     @FXML
     private Label statusLabel;
 
+    /**
+     * Initializes the controller after its root element has been completely processed.
+     * <p>
+     * This method binds the scroll pane's vertical value to the dialog container's
+     * height to enable automatic scrolling. It also loads the user and application
+     * images and displays the initial welcome message from Galaxy.
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
@@ -40,13 +47,20 @@ public class MainWindow {
         galImage = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/GaApp.jpg")));
 
         dialogContainer.getChildren().add(
-                DialogBox.getGalaxyDialog("Hello! I am Galaxy. \n" +
+                DialogBox.getGalaxyDialog("Hello! I am Galaxy.\n" +
                         "I can save all the tasks in the galaxy.\n" +
                         "How can I help you today?", galImage)
         );
     }
 
-    /** Injects the Galaxy instance */
+    /**
+     * Injects the Galaxy logic instance into this controller.
+     * <p>
+     * After injection, it checks for any initialization responses or startup
+     * errors from the Galaxy engine and displays them in the {@code statusLabel}.
+     *
+     * @param d The Galaxy instance to be used by this controller.
+     */
     public void setGal(Galaxy d) {
         gal = d;
 
@@ -58,10 +72,12 @@ public class MainWindow {
     }
 
     /**
-     *
-     * Creates two dialog boxes, one echoing user input and the other containing Duke's reply and then appends them to
-     * the dialog container. Clears the user input after processing.
-    */
+     * Handles the user input event triggered by the send button or pressing enter.
+     * <p>
+     * This method retrieves the user's input, gets a response from Galaxy,
+     * and appends two dialog boxes (user and Galaxy) to the
+     * dialog container. The user input field is cleared after processing.
+     */
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();

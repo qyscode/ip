@@ -19,8 +19,8 @@ public class Event extends Task {
      */
     public Event(String eventName, boolean isDone, String taskType, String end, String start) {
         super(eventName, isDone, taskType);
-	this.start = start;
-	this.end = end;
+	    this.start = start;
+	    this.end = end;
     }
 
     /**
@@ -56,7 +56,6 @@ public class Event extends Task {
         return "[" + "E" + "][" + this.getCondition() + "] "
                 + this.getName() + " (from: " + this.getStart() + " to: " + this.getEnd() + ")"
                 + priorityStatement;
-
     }
 
     /**
