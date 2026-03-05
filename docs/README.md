@@ -1,6 +1,6 @@
 # Galaxy User Guide
 Galaxy is a task management app that keeps track of all the things in the universe that you have to do. You can add regular tasks, tasks with deadlines, or events (which have a start and end date).<br><br>
-
+<br>
 <img alt="Product sample screenshot" src="Ui.png" width="300">
 
 ## Adding deadlines
@@ -60,6 +60,10 @@ This should be used after `list` to see identify the index of the task which you
 ### find
 Usage: <mark>`delete`</mark> `<keyword>`<br>
 This searches the list of tasks for all tasks that contain the given keyword.
+
+### priority
+Usage: <mark>`priority`</mark> p=`<priority_level_integer>`<br>
+Set a priority level for the task. It has to be integer. Do not set a integer less than 0.
 
 
 ## Saving/Closing
