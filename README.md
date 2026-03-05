@@ -1,5 +1,6 @@
 # Galaxy User Guide
-Galaxy is a task management app that keeps track of all the things in the universe that you have to do. You can add regular tasks, tasks with deadlines, or events (which have a start and end date).
+Galaxy is a task management app that keeps track of all the things in the universe that you have to do. You can add regular tasks, tasks with deadlines, or events (which have a start and end date).<br><br>
+<br>
 <img alt="Product sample screenshot" src="Ui.png" width="300">
 
 ## Adding deadlines
@@ -17,8 +18,8 @@ Now you have 1 tasks in the list.
 ```
 
 ### deadline
-A deadline is a regular task you have to do, but with a deadline.
-Usage: <mark>`deadline`</mark> `<description> /by <YYYY-MM-DD HHmm>`   
+A deadline is a regular task you have to do, but with a deadline.<br>
+Usage: <mark>`deadline`</mark> `<description> /by <YYYY-MM-DD HHmm>` <br>  
 Example: `deadline return book /by 2026-03-16 1800`
 
 Expected output:
@@ -29,8 +30,8 @@ Now you have 2 tasks in the list.
 ```
 
 ### event
-An event is a task with a start and end date.
-Usage: <mark>`event`</mark> `<description> /from <start> /to <end>`   
+An event is a task with a start and end date.<br>
+Usage: <mark>`event`</mark> `<description> /from <start> /to <end>` <br>  
 Example: `event project meeting /from Mon 2pm /to 4pm`
 
 Expected output:
@@ -59,6 +60,10 @@ This should be used after `list` to see identify the index of the task which you
 ### find
 Usage: <mark>`delete`</mark> `<keyword>`<br>
 This searches the list of tasks for all tasks that contain the given keyword.
+
+### priority
+Usage: <mark>`priority`</mark> p=`<priority_level_integer>`<br>
+Set a priority level for the task. It has to be integer. Do not set a integer less than 0.
 
 
 ## Saving/Closing
